@@ -1,0 +1,42 @@
+# Private data (paper: dataset is internal, cannot be shared)
+datasets/
+datasets_test/
+cache/
+*.npy
+*.mmap
+*.f16
+*.h5
+*.hdf5
+*.pkl
+
+# Trained models / experiment outputs (derived from private data)
+runs/
+logs/
+tmp/
+*.pt
+*.ckpt
+*.png
+# README banner is the one PNG we keep
+!cover.png
+*.log
+
+# Python / env
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.venv/
+.python-version
+.ruff_cache/
+
+# Scratch / throwaway experiments
+scratch_*.py
+pose_preview.*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+/rec00/

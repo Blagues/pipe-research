@@ -1,0 +1,84 @@
+data:
+  datasets_dir: ../datasets/
+  test_datasets_dir: ../datasets_test/
+  cache_dir: ../cache/
+  raw_window: 100          # CSI frames per window (1000 Hz, 1 frame = 1ms)
+  stride: 10               # stride between windows in frames
+  load_workers: 6          # parallel recording workers during cache build (RAM-limited)
+  reliable_joints:         # mocap markers used for pose label computation
+    - HAT_TOP
+    - LEFT_SHOULDER
+    - RIGHT_SHOULDER
+    - CHEST_UPPER
+    - CHEST_LOWER
+    - BACK_MIDDLE
+    - LEFT_UPPER_ARM
+    - LEFT_ELBOW_TOP
+    - LEFT_WRIST_SIDE
+    - LEFT_HAND
+    - RIGHT_UPPER_ARM
+    - RIGHT_ELBOW_TOP
+    - RIGHT_WRIST_SIDE
+    - RIGHT_HAND
+    - LEFT_HIP_FRONT
+    - LEFT_HIP_BACK
+    - RIGHT_HIP_FRONT
+    - RIGHT_HIP_BACK
+    - LEFT_UPPER_LEG_FRONT
+    - LEFT_KNEE_FRONT
+    - LEFT_ANKLE_FRONT
+    - LEFT_FOOT
+    - RIGHT_UPPER_LEG_FRONT
+    - RIGHT_KNEE_SIDE
+    - RIGHT_FOOT
+
+split:
+  n_clusters: 12           # k-means clusters on hip XZ position
+  val_frac: 0.10           # fraction of segments for val split
+  holdout_frac: 0.20       # fraction of segments for holdout split
+  seed: 42
+
+encoder:
+  d_model: 256             # embedding dimension
+  n_heads: 4               # attention heads (self- and cross-attn)
+  n_self_attn: 2           # transformer self-attention layers
+  n_cross_attn: 2          # cross-attention layers from CLS to CSI tokens
+  mlp_dim: 512             # hidden dim of input projection
+  ffn_dim: 512             # feedforward dim in attention blocks
+  dropout_mlp: 0.1
+  dropout_attn: 0.1
+  dropout_proj: 0.1
+  preprocess: whiten       # within-window preprocessing: none | diff | demean | stdev | whiten | l1_frame | l1_whiten
+  global_norm: false       # subtract train-set mean/std before preprocess (true = apply global z-score first)
+  last_frame_label: true   # use last frame as pose label (false = mean of window)
+  sigma: 150.0             # pose similarity bandwidth in mm
+  similarity: "pose"       # pose | vel | pose_vel | label  (pose_vel = paper's "body-state", label = SupCon)
+  sigma_v: 5.0             # velocity similarity bandwidth (mm/frame); used when similarity=vel or pose_vel
+  tau: 0.05                # InfoNCE temperature
+  epochs: 4
+  lr: 3.0e-4
+  lr_min: 3.0e-4           # equal to lr → constant learning rate
+  warmup_epochs: 0
+  batch_size: 128
+  har_interval: 2          # evaluate HAR every N encoder epochs
+  tsne_interval: 1         # save t-SNE every N epochs (0 = disabled)
+  tsne_samples: 2000
+  tsne_perplexity: 30
+
+har:
+  n_heads: 4
+  n_layers: 1
+  ffn_mult: 2              # feedforward dim = d_model * ffn_mult
+  dropout: 0.3
+  max_seq_len: 222         # pad segments to this length; mask hides padding
+  epochs: 60
+  lr: 1.0e-3
+  lr_min: 5.0e-5
+  warmup_epochs: 3
+  weight_decay: 1.0e-4
+  label_smoothing: 0.1
+  batch_size: 32
+  patience: 10             # early stop if val acc does not improve
+
+output:
+  runs_dir: runs/

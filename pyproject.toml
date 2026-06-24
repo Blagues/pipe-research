@@ -1,0 +1,27 @@
+[project]
+name = "wifi-har"
+version = "0.1.0"
+description = "Contrastive learning that teaches WiFi human activity recognition to ignore position"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "scikit-learn>=1.4",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+    "polars>=0.20",
+    "matplotlib>=3.8",
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+dev-dependencies = []
+
+[tool.ruff.lint]
+# E402 (import not at top of file): several scripts must run setup before the
+# imports it affects, e.g. os.environ["CUBLAS_WORKSPACE_CONFIG"] for determinism,
+# sys.path.insert to find the src package, matplotlib.use("Agg") and
+# warnings.filterwarnings. Those lines are intentionally above some imports.
+ignore = ["E402"]
