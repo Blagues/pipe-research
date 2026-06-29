@@ -4,7 +4,7 @@
 
 ### This codebase is part of the BSc Thesis 'PIPE: Teaching WiFi Sensing to ignore position'
 
-The full thesis is available here: [PIPE-thesis.pdf](PIPE-thesis.pdf)
+The full thesis is available here: [Thesis](https://repository.tudelft.nl/record/uuid:4b7bddb7-857f-4890-906e-9c97b95c17fc)
 
 PIPE is a contrastive learning pipeline for WiFi-based human activity recognition (HAR). It trains a CSI encoder supervised by motion-capture body pose, then trains a lightweight activity classifier on top of the learned embeddings. This repository contains the full pipeline and all scripts needed to reproduce the paper's experiments.
 
